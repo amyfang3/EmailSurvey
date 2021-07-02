@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => {
-    res.send({ hi: 'there' });
+    res.send({ hi: 'buddy' });
 });
 
 // the port that Heroku tells app to listen to, using environment variables (production) or 5000 (development)
