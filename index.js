@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
+const bodyParser = require("body-parser");
 const keys = require("./config/keys");
 require("./models/User"); // make sure models folder is defined since passport uses models
 require("./services/passport");
@@ -15,7 +16,8 @@ mongoose.connect(keys.mongoURI, {
 
 const app = express();
 
-// tells express to enable cookies
+// tells express to enable middlewares, including cookies and body-parser
+app.use(bodyParser.json());
 app.use(
   cookieSession({
     maxAge: 30 * 24 * 60 * 60 * 1000, // how long cookies will last, in ms (30 days)
@@ -27,8 +29,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
-// passes in app object into function within authRoutes
+// passes in app object into function within routes
 require("./routes/authRoutes")(app);
+require("./routes/billingRoutes")(app);
 
 // the port that Heroku tells app to listen to, using environment variables (production) or 5000 (development)
 const PORT = process.env.PORT || 5000;
